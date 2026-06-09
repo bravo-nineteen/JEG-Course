@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Japan Electrician Guide Class 2 Course
  * Description: Structured English-language study course for the Japanese Class 2 Electrician written exam.
- * Version: 1.1.2
+ * Version: 1.3.0
  * Author: Ben Merritt
  * Text Domain: jeg-class2-course
  * Domain Path: /languages
@@ -19,7 +19,7 @@ if ( ! defined( 'JEG_CLASS2_DIR' ) ) {
 if ( ! class_exists( 'JEG_Class2_Course' ) ) {
 
 final class JEG_Class2_Course {
-	const VERSION       = '1.0.0';
+	const VERSION       = '1.3.0';
 	const TEXT_DOMAIN   = 'jeg-class2-course';
 	const CPT           = 'jeg_lesson';
 	const TAXONOMY      = 'jeg_course_category';
@@ -28,7 +28,7 @@ final class JEG_Class2_Course {
 	const OPTION_VOCAB  = 'jeg_class2_vocab_entries';
 	const OPTION_QUIZ   = 'jeg_class2_quiz_questions';
 	const OPTION_DATA_VERSION = 'jeg_class2_data_version';
-	const DATA_VERSION        = '1.1.0';
+	const DATA_VERSION        = '1.3.0';
 
 	public static function init() : void {
 		add_action( 'init', array( __CLASS__, 'register_types' ) );
@@ -389,6 +389,18 @@ final class JEG_Class2_Course {
 	public static function render_quiz_shortcode() : string {
 		self::enqueue_frontend_assets();
 		$questions = self::get_quiz_questions();
+		$wiring_count = 0;
+		$diagram_count = 0;
+
+		foreach ( $questions as $question ) {
+			if ( 'Wiring Diagrams Section' === ( $question['section'] ?? '' ) ) {
+				$wiring_count++;
+			}
+
+			if ( '' !== trim( (string) ( $question['diagram'] ?? '' ) ) ) {
+				$diagram_count++;
+			}
+		}
 
 		ob_start();
 		?>
@@ -396,14 +408,22 @@ final class JEG_Class2_Course {
 			<div class="jeg-course-hero jeg-course-hero--compact">
 				<p class="jeg-eyebrow"><?php echo esc_html__( 'Quick exam practice', self::TEXT_DOMAIN ); ?></p>
 				<h2><?php echo esc_html__( 'Class 2 Electrician Quiz', self::TEXT_DOMAIN ); ?></h2>
-				<p class="jeg-lead"><?php echo esc_html__( 'Answer realistic exam-style questions, review detailed explanations, and track your score.', self::TEXT_DOMAIN ); ?></p>
+				<p class="jeg-lead"><?php echo esc_html( sprintf( __( 'Answer realistic exam-style questions, review detailed explanations, and track your score. This set has %1$d questions with %2$d dedicated wiring diagram items and %3$d text diagram variations.', self::TEXT_DOMAIN ), count( $questions ), $wiring_count, $diagram_count ) ); ?></p>
 				<p class="jeg-lead" style="margin-top: 0.5rem;"><?php echo esc_html__( 'These are original practice items built to match common Class 2 written exam patterns.', self::TEXT_DOMAIN ); ?></p>
 			</div>
 			<div class="jeg-quiz-scoreboard" data-jeg-quiz-score><span><?php echo esc_html__( 'Score', self::TEXT_DOMAIN ); ?></span><strong>0 / <?php echo esc_html( number_format_i18n( count( $questions ) ) ); ?></strong></div>
 			<div class="jeg-quiz-list">
+				<?php $current_section = ''; ?>
 				<?php foreach ( $questions as $index => $question ) : ?>
+					<?php if ( $current_section !== $question['section'] ) : ?>
+						<?php $current_section = $question['section']; ?>
+						<h3 class="jeg-quiz-section-title"><?php echo esc_html( $current_section ); ?></h3>
+					<?php endif; ?>
 					<div class="jeg-quiz-question" data-question data-correct="<?php echo esc_attr( (string) $question['correct'] ); ?>">
 						<h3><?php echo esc_html( ( $index + 1 ) . '. ' . $question['question'] ); ?></h3>
+						<?php if ( '' !== trim( $question['diagram'] ) ) : ?>
+							<pre class="jeg-quiz-diagram"><?php echo esc_html( $question['diagram'] ); ?></pre>
+						<?php endif; ?>
 						<div class="jeg-quiz-choices">
 							<?php foreach ( $question['choices'] as $choice_index => $choice ) : ?>
 								<button type="button" class="jeg-quiz-choice" data-choice-index="<?php echo esc_attr( (string) $choice_index ); ?>"><?php echo esc_html( $choice ); ?></button>
@@ -624,6 +644,8 @@ final class JEG_Class2_Course {
 		return array_map(
 			static function ( $question ) {
 				return array(
+					'section'    => (string) ( $question['section'] ?? 'Core Exam Section' ),
+					'diagram'    => (string) ( $question['diagram'] ?? '' ),
 					'question'   => (string) ( $question['question'] ?? '' ),
 					'choices'    => isset( $question['choices'] ) && is_array( $question['choices'] ) ? array_values( $question['choices'] ) : array(),
 					'correct'    => absint( $question['correct'] ?? 0 ),
