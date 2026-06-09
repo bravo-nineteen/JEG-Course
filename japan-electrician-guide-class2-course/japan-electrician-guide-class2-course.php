@@ -716,6 +716,14 @@ final class JEG_Class2_Course {
 	}
 
 	private static function current_url() : string {
+		$queried_id = get_queried_object_id();
+		if ( $queried_id ) {
+			$permalink = get_permalink( $queried_id );
+			if ( is_string( $permalink ) && '' !== $permalink ) {
+				return remove_query_arg( 'jeg_lesson', $permalink );
+			}
+		}
+
 		$request_uri = isset( $_SERVER['REQUEST_URI'] ) ? wp_unslash( $_SERVER['REQUEST_URI'] ) : '/';
 		return remove_query_arg( 'jeg_lesson', home_url( $request_uri ) );
 	}
