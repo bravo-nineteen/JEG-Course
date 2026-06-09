@@ -1,0 +1,451 @@
+:root {
+	--jeg-bg: #111827;
+	--jeg-card: #ffffff;
+	--jeg-accent: #dc2626;
+	--jeg-text: #111827;
+	--jeg-muted: #6b7280;
+	--jeg-border: #e5e7eb;
+	--jeg-soft: #f9fafb;
+	--jeg-shadow: 0 18px 40px rgba(17, 24, 39, 0.12);
+}
+
+.jeg-course-shell,
+.jeg-vocab-shell,
+.jeg-quiz-shell {
+	color: var(--jeg-text);
+	font-family: inherit;
+	margin: 0 auto;
+	max-width: 1200px;
+	padding: 1.25rem;
+}
+
+.jeg-course-hero {
+	background: linear-gradient(135deg, rgba(17, 24, 39, 0.98), rgba(31, 41, 55, 0.95));
+	border-radius: 24px;
+	color: #fff;
+	padding: 2rem;
+	position: relative;
+	overflow: hidden;
+	box-shadow: var(--jeg-shadow);
+	margin-bottom: 1.5rem;
+}
+
+.jeg-course-hero::after {
+	content: "";
+	position: absolute;
+	right: -80px;
+	top: -80px;
+	width: 220px;
+	height: 220px;
+	background: radial-gradient(circle, rgba(220, 38, 38, 0.2) 0%, rgba(220, 38, 38, 0) 70%);
+	border-radius: 50%;
+}
+
+.jeg-course-hero--compact {
+	margin-bottom: 1.25rem;
+	padding: 1.5rem 1.75rem;
+}
+
+.jeg-eyebrow {
+	color: rgba(255, 255, 255, 0.72);
+	font-size: 0.82rem;
+	font-weight: 700;
+	letter-spacing: 0.08em;
+	margin: 0 0 0.75rem;
+	text-transform: uppercase;
+}
+
+.jeg-course-hero h2,
+.jeg-course-hero h1 {
+	font-size: clamp(1.6rem, 3vw, 2.4rem);
+	line-height: 1.15;
+	margin: 0 0 0.75rem;
+	max-width: 22ch;
+}
+
+.jeg-lead {
+	color: rgba(255, 255, 255, 0.82);
+	font-size: 1rem;
+	line-height: 1.7;
+	margin: 0;
+	max-width: 72ch;
+}
+
+.jeg-progress-steps {
+	display: grid;
+	gap: 0.75rem;
+	grid-template-columns: repeat(3, minmax(0, 1fr));
+	margin-top: 1.5rem;
+}
+
+.jeg-step {
+	align-items: center;
+	background: rgba(255, 255, 255, 0.08);
+	backdrop-filter: blur(8px);
+	border: 1px solid rgba(255, 255, 255, 0.12);
+	border-radius: 16px;
+	display: flex;
+	gap: 0.75rem;
+	padding: 0.9rem 1rem;
+}
+
+.jeg-step span {
+	align-items: center;
+	background: var(--jeg-accent);
+	border-radius: 999px;
+	display: inline-flex;
+	flex: 0 0 auto;
+	font-weight: 700;
+	height: 2rem;
+	justify-content: center;
+	width: 2rem;
+}
+
+.jeg-step strong {
+	font-size: 0.95rem;
+	font-weight: 600;
+}
+
+.jeg-course-toolbar,
+.jeg-vocab-search,
+.jeg-quiz-actions {
+	margin-bottom: 1.25rem;
+}
+
+.jeg-search-input {
+	background: #fff;
+	border: 1px solid var(--jeg-border);
+	border-radius: 14px;
+	box-shadow: 0 2px 6px rgba(17, 24, 39, 0.04);
+	color: var(--jeg-text);
+	font-size: 1rem;
+	padding: 0.9rem 1rem;
+	width: 100%;
+}
+
+.jeg-search-input:focus {
+	border-color: var(--jeg-accent);
+	box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.12);
+	outline: none;
+}
+
+.jeg-filter-row {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.6rem;
+	margin-top: 0.9rem;
+}
+
+.jeg-filter-button,
+.jeg-button,
+.jeg-quiz-choice {
+	appearance: none;
+	background: #fff;
+	border: 1px solid var(--jeg-border);
+	border-radius: 12px;
+	color: var(--jeg-text);
+	cursor: pointer;
+	display: inline-flex;
+	font-weight: 700;
+	justify-content: center;
+	line-height: 1.2;
+	padding: 0.8rem 1rem;
+	text-decoration: none;
+	transition: transform 0.16s ease, border-color 0.16s ease, background-color 0.16s ease, color 0.16s ease, box-shadow 0.16s ease;
+}
+
+.jeg-filter-button:hover,
+.jeg-button:hover,
+.jeg-quiz-choice:hover {
+	border-color: var(--jeg-accent);
+	box-shadow: 0 10px 24px rgba(220, 38, 38, 0.12);
+	transform: translateY(-1px);
+}
+
+.jeg-filter-button.is-active {
+	background: var(--jeg-accent);
+	border-color: var(--jeg-accent);
+	color: #fff;
+}
+
+.jeg-course-summary {
+	display: grid;
+	gap: 1rem;
+	grid-template-columns: repeat(3, minmax(0, 1fr));
+	margin-bottom: 1.5rem;
+}
+
+.jeg-summary-card {
+	background: var(--jeg-card);
+	border: 1px solid var(--jeg-border);
+	border-radius: 18px;
+	box-shadow: var(--jeg-shadow);
+	padding: 1.1rem 1.2rem;
+}
+
+.jeg-summary-card strong,
+.jeg-quiz-scoreboard strong {
+	display: block;
+	font-size: 1.4rem;
+	margin-bottom: 0.25rem;
+}
+
+.jeg-summary-card span,
+.jeg-card-time,
+.jeg-card-tag,
+.jeg-detail-categories span,
+.jeg-card-categories span,
+.jeg-quiz-scoreboard span,
+.jeg-rich-text,
+.jeg-vocab-table,
+.jeg-vocab-table td,
+.jeg-vocab-table th {
+	color: var(--jeg-muted);
+}
+
+.jeg-lesson-grid {
+	display: grid;
+	gap: 1rem;
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.jeg-lesson-card,
+.jeg-lesson-detail,
+.jeg-quiz-question,
+.jeg-quiz-scoreboard,
+.jeg-table-wrap,
+.jeg-course-hero--compact,
+.jeg-vocab-table,
+.jeg-detail-section {
+	background: var(--jeg-card);
+	border: 1px solid var(--jeg-border);
+	border-radius: 20px;
+	box-shadow: var(--jeg-shadow);
+}
+
+.jeg-lesson-card {
+	padding: 1.2rem;
+	transition: border-color 0.16s ease, transform 0.16s ease, box-shadow 0.16s ease;
+}
+
+.jeg-lesson-card:hover,
+.jeg-lesson-card.is-active {
+	border-color: rgba(220, 38, 38, 0.3);
+	transform: translateY(-2px);
+}
+
+.jeg-card-meta-row,
+.jeg-card-categories,
+.jeg-detail-categories {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.5rem;
+	margin-bottom: 0.8rem;
+}
+
+.jeg-card-tag,
+.jeg-card-time,
+.jeg-card-categories span,
+.jeg-detail-categories span {
+	background: var(--jeg-soft);
+	border: 1px solid var(--jeg-border);
+	border-radius: 999px;
+	font-size: 0.82rem;
+	padding: 0.35rem 0.65rem;
+}
+
+.jeg-lesson-card h3,
+.jeg-lesson-detail h2,
+.jeg-detail-section h3,
+.jeg-quiz-question h3 {
+	color: var(--jeg-text);
+	line-height: 1.35;
+	margin: 0 0 0.75rem;
+}
+
+.jeg-lesson-card p {
+	line-height: 1.7;
+	margin: 0 0 1rem;
+}
+
+.jeg-button {
+	background: var(--jeg-accent);
+	border-color: var(--jeg-accent);
+	color: #fff;
+}
+
+.jeg-button--secondary {
+	background: #fff;
+	color: var(--jeg-text);
+}
+
+.jeg-selected-lesson {
+	margin-top: 1.5rem;
+}
+
+.jeg-lesson-detail {
+	padding: 1.5rem;
+}
+
+.jeg-detail-body {
+	display: grid;
+	gap: 1rem;
+	margin-top: 1rem;
+}
+
+.jeg-detail-section {
+	padding: 1rem 1.1rem;
+}
+
+.jeg-rich-text {
+	line-height: 1.75;
+}
+
+.jeg-rich-text p:first-child {
+	margin-top: 0;
+}
+
+.jeg-rich-text p:last-child {
+	margin-bottom: 0;
+}
+
+.jeg-table-wrap {
+	overflow-x: auto;
+}
+
+.jeg-vocab-table {
+	border-collapse: collapse;
+	min-width: 100%;
+	overflow: hidden;
+}
+
+.jeg-vocab-table th,
+.jeg-vocab-table td {
+	border-bottom: 1px solid var(--jeg-border);
+	font-size: 0.95rem;
+	padding: 0.9rem 0.9rem;
+	text-align: left;
+	vertical-align: top;
+}
+
+.jeg-vocab-table th {
+	background: #f8fafc;
+	color: var(--jeg-text);
+	font-size: 0.85rem;
+	letter-spacing: 0.03em;
+	text-transform: uppercase;
+}
+
+.jeg-vocab-table tr:last-child td {
+	border-bottom: 0;
+}
+
+.jeg-quiz-scoreboard {
+	align-items: center;
+	display: flex;
+	justify-content: space-between;
+	margin-bottom: 1rem;
+	padding: 1rem 1.1rem;
+}
+
+.jeg-quiz-list {
+	display: grid;
+	gap: 1rem;
+}
+
+.jeg-quiz-question {
+	padding: 1.2rem;
+}
+
+.jeg-quiz-choices {
+	display: grid;
+	gap: 0.65rem;
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+	margin-bottom: 0.9rem;
+}
+
+.jeg-quiz-choice {
+	justify-content: flex-start;
+	text-align: left;
+	width: 100%;
+}
+
+.jeg-quiz-choice.is-correct {
+	background: rgba(34, 197, 94, 0.12);
+	border-color: rgba(34, 197, 94, 0.45);
+	color: #166534;
+}
+
+.jeg-quiz-choice.is-wrong {
+	background: rgba(220, 38, 38, 0.1);
+	border-color: rgba(220, 38, 38, 0.35);
+	color: #991b1b;
+}
+
+.jeg-quiz-feedback {
+	background: var(--jeg-soft);
+	border: 1px solid var(--jeg-border);
+	border-radius: 14px;
+	padding: 0.9rem 1rem;
+}
+
+.jeg-quiz-answer {
+	font-weight: 700;
+	margin: 0 0 0.4rem;
+}
+
+.jeg-quiz-explanation {
+	margin: 0;
+	line-height: 1.7;
+}
+
+.is-hidden {
+	display: none !important;
+}
+
+@media (max-width: 960px) {
+	.jeg-progress-steps,
+	.jeg-course-summary,
+	.jeg-lesson-grid,
+	.jeg-quiz-choices {
+		grid-template-columns: 1fr;
+	}
+
+	.jeg-quiz-scoreboard {
+		align-items: flex-start;
+		flex-direction: column;
+		gap: 0.4rem;
+	}
+}
+
+@media (max-width: 640px) {
+	.jeg-course-shell,
+	.jeg-vocab-shell,
+	.jeg-quiz-shell {
+		padding: 0.75rem;
+	}
+
+	.jeg-course-hero,
+	.jeg-lesson-detail,
+	.jeg-quiz-question,
+	.jeg-summary-card,
+	.jeg-course-hero--compact,
+	.jeg-quiz-scoreboard {
+		border-radius: 16px;
+		padding: 1rem;
+	}
+
+	.jeg-filter-row {
+		gap: 0.5rem;
+	}
+
+	.jeg-filter-button,
+	.jeg-button,
+	.jeg-quiz-choice {
+		width: 100%;
+	}
+
+	.jeg-progress-steps {
+		gap: 0.6rem;
+	}
+}
