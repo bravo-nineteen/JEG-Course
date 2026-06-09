@@ -7,7 +7,7 @@
 
 	function initCourseFiltering(wrapper) {
 		var searchInput = wrapper.querySelector('[data-jeg-course-search]');
-		var filterButtons = wrapper.querySelectorAll('[data-jeg-course-filters] .jeg-filter-button');
+		var filterButtons = wrapper.querySelectorAll('.jeg-filter-row .jeg-filter-button');
 		var cards = wrapper.querySelectorAll('[data-course-card]');
 		var activeFilter = 'all';
 
@@ -119,7 +119,7 @@
 					}
 
 					if (answerNode) {
-						answerNode.textContent = isCorrect ? 'Correct' : 'Incorrect';
+						answerNode.textContent = isCorrect ? 'Correct: well done.' : 'Incorrect: review the explanation below.';
 						answerNode.classList.remove('is-hidden');
 					}
 
