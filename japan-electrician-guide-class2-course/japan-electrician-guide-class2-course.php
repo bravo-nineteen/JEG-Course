@@ -264,12 +264,13 @@ final class JEG_Class2_Course {
 		$lessons = self::get_lessons();
 		$terms   = get_terms( array( 'taxonomy' => self::TAXONOMY, 'hide_empty' => false, 'orderby' => 'name' ) );
 		$selected = isset( $_GET['jeg_lesson'] ) ? absint( wp_unslash( $_GET['jeg_lesson'] ) ) : 0;
+		$default_lesson_id = ! empty( $lessons ) ? (int) $lessons[0]->ID : 0;
 		$selected_post = $selected ? get_post( $selected ) : null;
-		$base_url = self::current_url();
+		$initial_lesson_id = ( $selected_post instanceof WP_Post && self::CPT === $selected_post->post_type ) ? (int) $selected_post->ID : $default_lesson_id;
 
 		ob_start();
 		?>
-		<section class="jeg-course-shell" data-jeg-course>
+		<section class="jeg-course-shell" data-jeg-course data-initial-lesson="<?php echo esc_attr( (string) $initial_lesson_id ); ?>">
 			<div class="jeg-course-hero">
 				<p class="jeg-eyebrow"><?php echo esc_html__( 'English study course for the Japanese written exam', self::TEXT_DOMAIN ); ?></p>
 				<h2><?php echo esc_html__( 'Japan Electrician Guide - Class 2 Electrician Course', self::TEXT_DOMAIN ); ?></h2>
@@ -310,9 +311,8 @@ final class JEG_Class2_Course {
 					$excerpt = wp_trim_words( wp_strip_all_tags( $lesson->post_excerpt ? $lesson->post_excerpt : $lesson->post_content ), 28, '...' );
 					$difficulty = get_post_meta( $lesson->ID, self::META_PREFIX . 'difficulty', true );
 					$study_time = get_post_meta( $lesson->ID, self::META_PREFIX . 'study_time', true );
-					$detail_url = add_query_arg( 'jeg_lesson', $lesson->ID, $base_url );
 					?>
-					<article class="jeg-lesson-card<?php echo $selected === (int) $lesson->ID ? ' is-active' : ''; ?>" data-course-card data-category="<?php echo esc_attr( $category_slugs ); ?>" data-title="<?php echo esc_attr( strtolower( $lesson->post_title ) ); ?>" data-excerpt="<?php echo esc_attr( strtolower( $excerpt ) ); ?>">
+					<article class="jeg-lesson-card<?php echo $initial_lesson_id === (int) $lesson->ID ? ' is-active' : ''; ?>" data-course-card data-lesson-id="<?php echo esc_attr( (string) $lesson->ID ); ?>" data-category="<?php echo esc_attr( $category_slugs ); ?>" data-title="<?php echo esc_attr( strtolower( $lesson->post_title ) ); ?>" data-excerpt="<?php echo esc_attr( strtolower( $excerpt ) ); ?>">
 						<div class="jeg-card-meta-row">
 							<span class="jeg-card-tag"><?php echo esc_html( $difficulty ? $difficulty : 'Beginner' ); ?></span>
 							<span class="jeg-card-time"><?php echo esc_html( $study_time ? $study_time : '30 minutes' ); ?></span>
@@ -326,13 +326,19 @@ final class JEG_Class2_Course {
 							<?php endif; ?>
 						</div>
 						<p><?php echo esc_html( $excerpt ); ?></p>
-						<a class="jeg-button" href="<?php echo esc_url( $detail_url ); ?>#jeg-course-detail"><?php echo esc_html__( 'Start Lesson', self::TEXT_DOMAIN ); ?></a>
+						<a class="jeg-button" href="#jeg-lesson-<?php echo esc_attr( (string) $lesson->ID ); ?>" data-jeg-open-lesson="<?php echo esc_attr( (string) $lesson->ID ); ?>"><?php echo esc_html__( 'Start Lesson', self::TEXT_DOMAIN ); ?></a>
 					</article>
 				<?php endforeach; ?>
 			</div>
 
-			<?php if ( $selected_post instanceof WP_Post && self::CPT === $selected_post->post_type ) : ?>
-				<div class="jeg-selected-lesson" id="jeg-course-detail"><?php echo wp_kses_post( self::render_lesson_detail( $selected_post ) ); ?></div>
+			<?php if ( ! empty( $lessons ) ) : ?>
+				<div class="jeg-selected-lesson" id="jeg-course-detail">
+					<?php foreach ( $lessons as $lesson ) : ?>
+						<div class="jeg-lesson-detail-panel<?php echo ( (int) $lesson->ID === $initial_lesson_id ) ? '' : ' is-hidden'; ?>" data-lesson-detail="<?php echo esc_attr( (string) $lesson->ID ); ?>" id="jeg-lesson-<?php echo esc_attr( (string) $lesson->ID ); ?>">
+							<?php echo wp_kses_post( self::render_lesson_detail( $lesson ) ); ?>
+						</div>
+					<?php endforeach; ?>
+				</div>
 			<?php endif; ?>
 		</section>
 		<?php

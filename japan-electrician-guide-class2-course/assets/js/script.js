@@ -41,6 +41,48 @@
 		applyFilters();
 	}
 
+	function initLessonSelection(wrapper) {
+		var links = wrapper.querySelectorAll('[data-jeg-open-lesson]');
+		var cards = wrapper.querySelectorAll('[data-course-card][data-lesson-id]');
+		var panels = wrapper.querySelectorAll('[data-lesson-detail]');
+		var initialLesson = Number(wrapper.getAttribute('data-initial-lesson') || 0);
+
+		if (!links.length || !panels.length) {
+			return;
+		}
+
+		function selectLesson(lessonId, updateHash) {
+			if (!lessonId) {
+				return;
+			}
+
+			cards.forEach(function (card) {
+				card.classList.toggle('is-active', Number(card.getAttribute('data-lesson-id')) === lessonId);
+			});
+
+			panels.forEach(function (panel) {
+				panel.classList.toggle('is-hidden', Number(panel.getAttribute('data-lesson-detail')) !== lessonId);
+			});
+
+			if (updateHash) {
+				window.location.hash = 'jeg-lesson-' + lessonId;
+			}
+		}
+
+		links.forEach(function (link) {
+			link.addEventListener('click', function (event) {
+				event.preventDefault();
+				var lessonId = Number(link.getAttribute('data-jeg-open-lesson'));
+				selectLesson(lessonId, true);
+			});
+		});
+
+		var hash = window.location.hash || '';
+		var hashMatch = hash.match(/^#jeg-lesson-(\d+)$/);
+		var hashLessonId = hashMatch ? Number(hashMatch[1]) : 0;
+		selectLesson(hashLessonId || initialLesson, false);
+	}
+
 	function initVocabFiltering(wrapper) {
 		var searchInput = wrapper.querySelector('[data-jeg-vocab-search]');
 		var rows = wrapper.querySelectorAll('[data-vocab-row]');
@@ -145,7 +187,10 @@
 	}
 
 	document.addEventListener('DOMContentLoaded', function () {
-		document.querySelectorAll('[data-jeg-course]').forEach(initCourseFiltering);
+		document.querySelectorAll('[data-jeg-course]').forEach(function (wrapper) {
+			initCourseFiltering(wrapper);
+			initLessonSelection(wrapper);
+		});
 		document.querySelectorAll('[data-jeg-vocab]').forEach(initVocabFiltering);
 		document.querySelectorAll('[data-jeg-quiz]').forEach(initQuiz);
 	});
